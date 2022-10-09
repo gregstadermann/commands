@@ -1,9 +1,9 @@
 'use strict';
 
 const { Broadcast: B } = require('ranvier');
-const ArgParser = require('../../bundle-example-lib/lib/ArgParser');
+const ArgParser = require('../../lib/lib/ArgParser');
 const dot = ArgParser.parseDot;
-const ItemUtil = require('../../bundle-example-lib/lib/ItemUtil');
+const ItemUtil = require('../../lib/lib/ItemUtil');
 
 module.exports = {
   usage: 'give <item> <target>',
@@ -38,7 +38,7 @@ module.exports = {
         if (!accepts || !accepts.includes(targetItem.entityReference)) {
           return B.sayAt(player, 'They don\'t want that.');
         }
-      } 
+      }
     }
 
     if (!target) {
