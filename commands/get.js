@@ -41,6 +41,7 @@ module.exports = {
     //Newest containers should go first, so that if you type get all corpse you get from the
     // most recent corpse. See issue #247.
       container = ArgParser.parseDot(parts[1], [...player.room.items].reverse());
+      container = container || ArgParser.parseDot(parts[1], [...player.equipment].reverse());
       if (!container) {
         return Broadcast.sayAt(player, "You don't see anything like that here.");
       }

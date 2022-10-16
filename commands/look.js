@@ -66,9 +66,9 @@ function getCompass(player) {
   U = U === 'U' ? '<yellow><b>U</yellow></b>' : U;
   D = D === 'D' ? '<yellow><b>D</yellow></b>' : D;
 
-  const line1 = `${NW}     ${N}     ${NE}`;
-  const line2 = `<yellow><b>${W}</b></yellow> <-${U}-(@)-${D}-> <yellow><b>${E}</b></yellow>`;
-  const line3 = `${SW}     ${S}     ${SE}\r\n`;
+  const line1 = '';
+  const line2 = '';
+  const line3 = '';
 
   return [line1, line2, line3];
 }
@@ -77,24 +77,16 @@ function lookRoom(state, player) {
   const room = player.room;
 
   if (player.room.coordinates) {
-    B.sayAt(player, '<yellow><b>' + sprintf('%-65s', room.title) + '</b></yellow>');
-    B.sayAt(player, B.line(60));
+    B.sayAt(player, '[<b><white>' + sprintf('%s', room.title) + '</white></b>]');
   } else {
     const [ line1, line2, line3 ] = getCompass(player);
 
     // map is 15 characters wide, room is formatted to 80 character width
-    B.sayAt(player, '<yellow><b>' + sprintf('%-65s', room.title) + line1 + '</b></yellow>');
-    B.sayAt(player, B.line(60) + B.line(5, ' ') + line2);
-    B.sayAt(player, B.line(65, ' ') + '<yellow><b>' + line3 + '</b></yellow>');
+    B.sayAt(player, '[<b>' + sprintf('%s', room.title)+ '</b>]');
   }
 
   if (!player.getMeta('config.brief')) {
     B.sayAt(player, room.description, 80);
-  }
-
-  if (player.getMeta('config.minimap')) {
-    B.sayAt(player, '');
-    state.CommandManager.get('map').execute(4, player);
   }
 
   B.sayAt(player, '');
@@ -108,7 +100,7 @@ function lookRoom(state, player) {
     if (otherPlayer.isInCombat()) {
       combatantsDisplay = getCombatantsDisplay(otherPlayer);
     }
-    B.sayAt(player, '[Player] ' + otherPlayer.name + combatantsDisplay);
+    B.sayAt(player, 'Also here: ' + otherPlayer.name + combatantsDisplay);
   });
 
   // show all the items in the rom
@@ -148,30 +140,20 @@ function lookRoom(state, player) {
     if (npc.isInCombat()) {
       combatantsDisplay = getCombatantsDisplay(npc);
     }
+    let allNpcs = [];
 
-    // color NPC label by difficulty
-    let npcLabel = 'NPC';
-    switch (true) {
-      case (player.level  - npc.level > 4):
-        npcLabel = '<cyan>NPC</cyan>';
-        break;
-      case (npc.level - player.level > 9):
-        npcLabel = '<b><black>NPC</black></b>';
-        break;
-      case (npc.level - player.level > 5):
-        npcLabel = '<red>NPC</red>';
-        break;
-      case (npc.level - player.level > 3):
-        npcLabel = '<yellow>NPC</yellow>';
-        break;
-      default:
-        npcLabel = '<green>NPC</green>';
-        break;
-    }
-    B.sayAt(player, `[${npcLabel}] ` + npc.name + combatantsDisplay);
+    allNpcs.push(' ' + npc.name);
+    // show all the items in the rom
+    let allItems = [];
+    room.items.forEach(item => {
+      allItems.push(' ' + item.name);
+
+      B.sayAt(player, npc.name + combatantsDisplay);
+    });
+
   });
 
-  B.at(player, '[<yellow><b>Exits</yellow></b>: ');
+  B.at(player, '<b>Obvious paths: </b>');
 
   const exits = room.getExits();
   const foundExits = [];
@@ -193,12 +175,11 @@ function lookRoom(state, player) {
     }
 
     return exit.direction;
-  }).join(' '));
+  }).join(', '));
 
   if (!foundExits.length) {
     B.at(player, 'none');
   }
-  B.sayAt(player, ']');
 }
 
 function lookEntity(state, player, args) {
