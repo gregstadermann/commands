@@ -8,7 +8,7 @@ const {
   Item,
   ItemType,
   Logger,
-  Player
+  Player, Broadcast
 } = require('ranvier');
 const ArgParser = require('../../lib/lib/ArgParser');
 const ItemUtil = require('../../lib/lib/ItemUtil');
@@ -85,11 +85,23 @@ function lookRoom(state, player) {
     B.sayAt(player, '[<b>' + sprintf('%s', room.title)+ '</b>]');
   }
 
-  if (!player.getMeta('config.brief')) {
+  if(room.items.size > 0) {
+    // show all the items in the room
+    let $itemCollection = ' You also see ';
+
+    if(room.items.size === 1) {
+      room.items.forEach(item => {
+        $itemCollection = $itemCollection + item.roomDesc;
+      });
+    } else {
+      room.items.forEach(item => {
+        $itemCollection = $itemCollection + item.roomDesc + ', ';
+      });
+    }
+    B.sayAt(player, room.description+$itemCollection, 80);
+  }else{
     B.sayAt(player, room.description, 80);
   }
-
-  B.sayAt(player, '');
 
   // show all players
   room.players.forEach(otherPlayer => {
@@ -103,15 +115,8 @@ function lookRoom(state, player) {
     B.sayAt(player, 'Also here: ' + otherPlayer.name + combatantsDisplay);
   });
 
-  // show all the items in the rom
-  room.items.forEach(item => {
-    if (item.hasBehavior('resource')) {
-      B.sayAt(player, `[${ItemUtil.qualityColorize(item, 'Resource')}] <magenta>${item.roomDesc}</magenta>`);
-    } else {
-      B.sayAt(player, `[${ItemUtil.qualityColorize(item, 'Item')}] <magenta>${item.roomDesc}</magenta>`);
-    }
-  });
-
+  let allNpcs = [];
+  let combatantsDisplay = '';
   // show all npcs
   room.npcs.forEach(npc => {
     // show quest state as [!], [%], [?] for available, in progress, ready to complete respectively
@@ -136,22 +141,15 @@ function lookRoom(state, player) {
       }
     }
 
-    let combatantsDisplay = '';
     if (npc.isInCombat()) {
       combatantsDisplay = getCombatantsDisplay(npc);
     }
-    let allNpcs = [];
 
     allNpcs.push(' ' + npc.name);
-    // show all the items in the rom
-    let allItems = [];
-    room.items.forEach(item => {
-      allItems.push(' ' + item.name);
 
-      B.sayAt(player, npc.name + combatantsDisplay);
-    });
 
   });
+  B.sayAt(player, 'Also here: '+allNpcs + combatantsDisplay);
 
   B.at(player, '<b>Obvious paths: </b>');
 
@@ -205,7 +203,22 @@ function lookEntity(state, player, args) {
 
   if (entity instanceof Player) {
     // TODO: Show player equipment?
-    B.sayAt(player, `You see fellow player ${entity.name}.`);
+    B.sayAt(player, `You see ${entity.name}.`);
+    const allPlayerItems = function() {
+      let equipmentTemp = [];
+      let inventoryTemp = [];
+
+      for (const [, item] of entity.inventory) {
+        inventoryTemp.push(ItemUtil.display(item));
+        console.log(inventoryTemp);
+      }
+      for(const [slot, item ] of entity.equipment)
+      {
+        equipmentTemp.push(ItemUtil.display(item));
+      }
+      Broadcast.sayAt(player, entity.name+' is wearing '+equipmentTemp+', '+inventoryTemp);
+    };
+    allPlayerItems();
     return;
   }
 

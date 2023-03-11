@@ -17,8 +17,29 @@ module.exports = {
     Broadcast.sayAt(player, ':');
 
     // TODO: Implement grouping
-    for (const [, item ] of player.inventory) {
-      Broadcast.sayAt(player, ItemUtil.display(item));
+    const allPlayerItems = function() {
+      let equipmentTemp = [];
+      let inventoryTemp = [];
+
+      for (const [, item] of player.inventory) {
+        inventoryTemp.push(ItemUtil.display(item));
+      }
+      for(const [slot, item ] of player.equipment)
+      {
+        equipmentTemp.push(ItemUtil.display(item));
+      }
+      Broadcast.sayAt(player, equipmentTemp+', '+inventoryTemp);
+    };
+
+
+
+    if (!player.equipment.size) {
+      return Broadcast.sayAt(player, "You are completely naked!");
+    }
+    allPlayerItems();
+    Broadcast.sayAt(player, "You are wearing ");
+    for (const [slot, item] of player.equipment) {
+      Broadcast.sayAt(player, `  <${slot}> ${ItemUtil.display(item)}`);
     }
   }
 };
