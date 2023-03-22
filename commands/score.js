@@ -1,7 +1,7 @@
 'use strict';
 
 const sprintf = require('sprintf-js').sprintf;
-const { Broadcast: B } = require('ranvier');
+const { Broadcast: B, Logger } = require('ranvier');
 const Combat = require('../../combat/lib/Combat');
 
 module.exports = {
@@ -15,7 +15,14 @@ module.exports = {
     let stats = {
       strength: 0,
       agility: 0,
-      intellect: 0,
+      aura: 0,
+      constitution: 0,
+      dexterity: 0,
+      discipline: 0,
+      charisma: 0,
+      intuition: 0,
+      intelligence: 0,
+      wisdom: 0,
       stamina: 0,
       armor: 0,
       health: 0,
@@ -78,17 +85,18 @@ module.exports = {
     say(sprintf('%60s', "'" + B.line(22) + "'"));
 
     say('<b><green>' + sprintf(
-      '%-24s',
+      '%-27s',
       ' Stats'
     ) + '</green></b>');
-    say('.' + B.line(22) + '.');
+    say('.' + B.line(25) + '.');
 
 
     const printStat = (stat, newline = true) => {
       const val = stats[stat];
+      Logger.verbose(val);
       const statColor = (val.current > val.base ? 'green' : 'white');
       const str = sprintf(
-        `| %-9s : <b><${statColor}>%8s</${statColor}></b> |`,
+        `| %-12s : <b><${statColor}>%8s</${statColor}></b> |`,
         stat[0].toUpperCase() + stat.slice(1),
         val.current
       );
@@ -101,19 +109,34 @@ module.exports = {
     };
 
     printStat('strength', false); // left
-    say('<b><green>' + sprintf('%36s', 'Gold ')); // right
+    say('<b><green>' + sprintf('%30s', 'Gold ')); // right
     printStat('agility', false); // left
-    say(sprintf('%36s', '.' + B.line(12) + '.')); // right
-    printStat('intellect', false); // left
-    say(sprintf('%22s| <b>%10s</b> |', '', p.getMeta('currencies.gold') || 0)); // right
+    say(sprintf('%33s', '.' + B.line(12) + '.')); // right
+    printStat('intelligence', false); // left
+    say(sprintf('%19s| <b>%10s</b> |', '', p.getMeta('currencies.gold') || 0)); // right
     printStat('stamina', false); // left
-    say(sprintf('%36s', "'" + B.line(12) + "'")); // right
+    say(sprintf('%33s', "'" + B.line(12) + "'")); // right
+    printStat('discipline', true); // left
+    //say(sprintf('%39s', '.' + B.line(12) + '.')); // right
+    printStat('constitution', true); // left
+    //say(sprintf('%39s', '.' + B.line(12) + '.')); // right
+    printStat('dexterity', true); // left
+    //say(sprintf('%39s', "'" + B.line(12) + "'")); // right
+    printStat('charisma', true); // left
+    //say(sprintf('%39s', '.' + B.line(12) + '.')); // right
+    printStat('intuition', true); // left
+    //say(sprintf('%39s', '.' + B.line(12) + '.')); // right
+    printStat('wisdom', true); // left
+    //say(sprintf('%39s', "'" + B.line(12) + "'")); // right
+    printStat('aura', true); // left
+    //say(sprintf('%39s', '.' + B.line(12) + '.')); // right
+    say("'" + B.line(25) + "'");
 
-    say(':' + B.line(22) + ':');
+    say(':' + B.line(25) + ':');
     printStat('armor');
     printStat('critical');
     printStat('AS');
     printStat('DS');
-    say("'" + B.line(22) + "'");
+    say("'" + B.line(25) + "'");
   }
 };
