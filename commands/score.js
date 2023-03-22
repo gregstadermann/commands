@@ -20,6 +20,8 @@ module.exports = {
       armor: 0,
       health: 0,
       critical: 0,
+      AS: 0,
+      DS: 0,
     };
 
     for (const stat in stats) {
@@ -110,6 +112,8 @@ module.exports = {
     say(':' + B.line(22) + ':');
     printStat('armor');
     printStat('critical');
+    printStat('AS');
+    printStat('DS');
     say("'" + B.line(22) + "'");
   }
 };

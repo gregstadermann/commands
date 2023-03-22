@@ -75,6 +75,7 @@ function getCompass(player) {
 
 function lookRoom(state, player) {
   const room = player.room;
+  let otherPlayers = '';
 
   if (player.room.coordinates) {
     B.sayAt(player, '[<b><white>' + sprintf('%s', room.title) + '</white></b>]');
@@ -95,7 +96,7 @@ function lookRoom(state, player) {
       });
     } else {
       room.items.forEach(item => {
-        $itemCollection = $itemCollection + item.roomDesc + ', ';
+        $itemCollection = ' ' + $itemCollection + item.roomDesc + ', ';
       });
     }
     B.sayAt(player, room.description+$itemCollection, 80);
@@ -112,7 +113,7 @@ function lookRoom(state, player) {
     if (otherPlayer.isInCombat()) {
       combatantsDisplay = getCombatantsDisplay(otherPlayer);
     }
-    B.sayAt(player, 'Also here: ' + otherPlayer.name + combatantsDisplay);
+    otherPlayers = otherPlayer.name + combatantsDisplay + ',';
   });
 
   let allNpcs = [];
@@ -144,12 +145,9 @@ function lookRoom(state, player) {
     if (npc.isInCombat()) {
       combatantsDisplay = getCombatantsDisplay(npc);
     }
-
     allNpcs.push(' ' + npc.name);
-
-
   });
-  B.sayAt(player, 'Also here: '+allNpcs + combatantsDisplay);
+  B.sayAt(player, 'Also here: '+ otherPlayers + allNpcs + combatantsDisplay);
 
   B.at(player, '<b>Obvious paths: </b>');
 
