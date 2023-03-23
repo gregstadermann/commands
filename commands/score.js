@@ -29,6 +29,8 @@ module.exports = {
       critical: 0,
       AS: 0,
       DS: 0,
+      'edged weapons': 0,
+      'armor use': 0,
     };
 
     for (const stat in stats) {
@@ -93,7 +95,9 @@ module.exports = {
 
     const printStat = (stat, newline = true) => {
       const val = stats[stat];
-      Logger.verbose(val);
+      if(stat.metadata){
+        Logger.verbose(stat.metadata);
+      }
       const statColor = (val.current > val.base ? 'green' : 'white');
       const str = sprintf(
         `| %-12s : <b><${statColor}>%8s</${statColor}></b> |`,
@@ -117,19 +121,12 @@ module.exports = {
     printStat('stamina', false); // left
     say(sprintf('%33s', "'" + B.line(12) + "'")); // right
     printStat('discipline', true); // left
-    //say(sprintf('%39s', '.' + B.line(12) + '.')); // right
     printStat('constitution', true); // left
-    //say(sprintf('%39s', '.' + B.line(12) + '.')); // right
     printStat('dexterity', true); // left
-    //say(sprintf('%39s', "'" + B.line(12) + "'")); // right
     printStat('charisma', true); // left
-    //say(sprintf('%39s', '.' + B.line(12) + '.')); // right
     printStat('intuition', true); // left
-    //say(sprintf('%39s', '.' + B.line(12) + '.')); // right
     printStat('wisdom', true); // left
-    //say(sprintf('%39s', "'" + B.line(12) + "'")); // right
     printStat('aura', true); // left
-    //say(sprintf('%39s', '.' + B.line(12) + '.')); // right
     say("'" + B.line(25) + "'");
 
     say(':' + B.line(25) + ':');
@@ -137,6 +134,8 @@ module.exports = {
     printStat('critical');
     printStat('AS');
     printStat('DS');
+    printStat('edged weapons');
+    printStat('armor use');
     say("'" + B.line(25) + "'");
   }
 };
