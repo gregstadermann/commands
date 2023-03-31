@@ -208,13 +208,12 @@ function lookEntity(state, player, args) {
 
       for (const [, item] of entity.inventory) {
         inventoryTemp.push(ItemUtil.display(item));
-        console.log(inventoryTemp);
       }
       for(const [slot, item ] of entity.equipment)
       {
         equipmentTemp.push(ItemUtil.display(item));
       }
-      Broadcast.sayAt(player, entity.name+' is wearing '+equipmentTemp+', '+inventoryTemp);
+      Broadcast.sayAt(player, entity.name+' is wearing'+equipmentTemp+', '+inventoryTemp);
     };
     allPlayerItems();
     return;
