@@ -22,6 +22,7 @@ module.exports = {
     }
 
     if (args) {
+      Logger.verbose(`\t${player.name} looking at ${args}`);
       return lookEntity(state, player, args);
     }
 
@@ -185,6 +186,8 @@ function lookEntity(state, player, args) {
   let search = null;
 
   if (args.length > 1) {
+    console.log(args);
+    search = args[0] === 'at' ? args[1] : args[0];
     search = args[0] === 'in' ? args[1] : args[0];
   } else {
     search = args[0];
