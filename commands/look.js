@@ -30,49 +30,6 @@ module.exports = {
   }
 };
 
-function getCompass(player) {
-  const room = player.room;
-
-  const exitMap = new Map();
-  exitMap.set('east', 'E');
-  exitMap.set('west', 'W');
-  exitMap.set('south', 'S');
-  exitMap.set('north', 'N');
-  exitMap.set('up', 'U');
-  exitMap.set('down', 'D');
-  exitMap.set('southwest', 'SW');
-  exitMap.set('southeast', 'SE');
-  exitMap.set('northwest', 'NW');
-  exitMap.set('northeast', 'NE');
-
-  const directionsAvailable = room.exits.map(exit => exitMap.get(exit.direction));
-
-  const exits = Array.from(exitMap.values()).map(exit => {
-    if (directionsAvailable.includes(exit)) {
-      return exit;
-    }
-    //If we are either SE or NE, pre-pad
-    if (exit.length === 2 && exit.includes('E')) {
-      return ' -';
-    }
-
-    //If we are either SW or NW, post-pad
-    if (exit.length === 2 && exit.includes('W')) {
-      return '- ';
-    }
-    return '-';
-  });
-
-  let [E, W, S, N, U, D, SW, SE, NW, NE] = exits;
-  U = U === 'U' ? '<yellow><b>U</yellow></b>' : U;
-  D = D === 'D' ? '<yellow><b>D</yellow></b>' : D;
-
-  const line1 = '';
-  const line2 = '';
-  const line3 = '';
-
-  return [line1, line2, line3];
-}
 
 function lookRoom(state, player) {
   const room = player.room;
@@ -80,12 +37,8 @@ function lookRoom(state, player) {
 
   if (player.room.coordinates) {
     B.sayAt(player, '[<b><white>' + sprintf('%s', room.title) + '</white></b>]');
-  } else {
-    const [ line1, line2, line3 ] = getCompass(player);
-
-    // map is 15 characters wide, room is formatted to 80 character width
-    B.sayAt(player, '[<b>' + sprintf('%s', room.title)+ '</b>]');
-  }
+  }else{
+    B.sayAt(player, '[<b><white>' + sprintf('%s', room.title) + '</white></b>]');}
 
   if(room.items.size > 0) {
     // show all the items in the room
@@ -93,12 +46,13 @@ function lookRoom(state, player) {
 
     if(room.items.size === 1) {
       room.items.forEach(item => {
-        $itemCollection = $itemCollection + item.roomDesc;
+        $itemCollection = $itemCollection + item.roomDesc+'. ';
       });
     } else {
       room.items.forEach(item => {
         $itemCollection = ' ' + $itemCollection + item.roomDesc + ', ';
       });
+      $itemCollection = $itemCollection + '.';
     }
     B.sayAt(player, room.description+$itemCollection, 80);
   }else{
@@ -148,9 +102,14 @@ function lookRoom(state, player) {
     }
     allNpcs.push(' ' + npc.name);
   });
-  B.sayAt(player, 'Also here: '+ otherPlayers + allNpcs + combatantsDisplay);
+
+  if(allNpcs.length > 0 || otherPlayers.length > 0) {
+    console.log('allNpcs: ', allNpcs);
+    B.sayAt(player, 'Also here: ' + otherPlayers + allNpcs);
+  }
 
   B.at(player, '<b>Obvious paths: </b>');
+
 
   const exits = room.getExits();
   const foundExits = [];
@@ -158,8 +117,10 @@ function lookRoom(state, player) {
   // prioritize explicit over inferred exits with the same name
   for (const exit of exits) {
     if (foundExits.find(fe => fe.direction === exit.direction)) {
+      console.log('foundExits: ', foundExits);
       continue;
     }
+    console.log('exit: ', exit);
 
     foundExits.push(exit);
   }
