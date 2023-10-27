@@ -104,7 +104,7 @@ function lookRoom(state, player) {
   });
 
   if(allNpcs.length > 0 || otherPlayers.length > 0) {
-    console.log('allNpcs: ', allNpcs);
+    //console.log('allNpcs: ', allNpcs);
     B.sayAt(player, 'Also here: ' + otherPlayers + allNpcs);
   }
 
@@ -117,10 +117,9 @@ function lookRoom(state, player) {
   // prioritize explicit over inferred exits with the same name
   for (const exit of exits) {
     if (foundExits.find(fe => fe.direction === exit.direction)) {
-      console.log('foundExits: ', foundExits);
+      //console.log('foundExits: ', foundExits);
       continue;
     }
-    console.log('exit: ', exit);
 
     foundExits.push(exit);
   }
@@ -146,13 +145,14 @@ function lookEntity(state, player, args) {
   args = args.split(' ');
   let search = null;
 
-  if (args.length > 1) {
-    console.log(args);
+  if (args.length > 1 && args[0] === 'at') {
     search = args[0] === 'at' ? args[1] : args[0];
+  } else if (args.length > 1 && args[0] === 'in') {
     search = args[0] === 'in' ? args[1] : args[0];
   } else {
     search = args[0];
   }
+  console.log('search: ', search);
 
   let entity = ArgParser.parseDot(search, room.items);
   entity = entity || ArgParser.parseDot(search, room.players);

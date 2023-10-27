@@ -24,11 +24,9 @@ module.exports = {
     if (arg0 === 'loot') {
       args = ('all ' + args).trim();
     }
-    console.log(args);
 
     // get 3.foo from bar -> get 3.foo bar
     let parts = args.split(' ').filter(arg => !arg.match(/from/));
- console.log(parts);
     // pick up <item>
     if (parts.length > 1 && parts[0] === 'up') {
       parts = parts.slice(1);
@@ -43,7 +41,6 @@ module.exports = {
     // most recent corpse. See issue #247.
       container = ArgParser.parseDot(parts[1], [...player.room.items].reverse());
       container = container || ArgParser.parseDot(parts[1], [...player.equipment].reverse());
-      console.log(container);
       if (!container) {
         return Broadcast.sayAt(player, "You don't see anything like that here.");
       }
@@ -58,7 +55,6 @@ module.exports = {
 
       search = parts[0];
       source = container.inventory;
-      console.log(source);
     }
 
     if (search === 'all') {

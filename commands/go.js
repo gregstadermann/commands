@@ -2,6 +2,7 @@
 
 const { Broadcast } = require('ranvier');
 const { CommandParser } = require('../../lib/lib/CommandParser');
+const {Broadcast: B} = require("../../../../gemstone3-core");
 
 module.exports = {
     usage: 'go <room>',
@@ -15,13 +16,15 @@ module.exports = {
 
         roomExit = CommandParser.canGo(player, direction);
         if (!roomExit) {
-            return Broadcast.sayAt(player, "You can't go that way!");
+            return Broadcast.sayAt(player, "You can't go there.");
         }
 
         const targetRoom = state.RoomManager.getRoom(roomExit.roomId);
 
         player.moveTo(targetRoom, () => {
-            Broadcast.sayAt(player, '<b><green>You walk'+direction+'</green></b>\r\n');
+            Broadcast.sayAt(player, '<b><green>You walk '+direction+'</green></b>\r\n');
+
+            Broadcast.sayAtExcept(targetRoom, `${player.name} just arrived.`, player);
             state.CommandManager.get('look').execute('', player);
         });
 

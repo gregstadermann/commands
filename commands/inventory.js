@@ -28,7 +28,7 @@ module.exports = {
         for (const [slot, item] of player.equipment) {
           equipmentTemp.push(ItemUtil.display(item));
         }
-        Broadcast.sayAt(player, "You are wearing " + equipmentTemp + " " + "," + inventoryTemp);
+        Broadcast.sayAt(player, "You have " + equipmentTemp + " " + "," + inventoryTemp);
       };
 
       if (!player.equipment.size) {
