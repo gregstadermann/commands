@@ -158,6 +158,7 @@ function lookEntity(state, player, args) {
   entity = entity || ArgParser.parseDot(search, room.players);
   entity = entity || ArgParser.parseDot(search, room.npcs);
   entity = entity || ArgParser.parseDot(search, player.inventory);
+  entity = entity || ArgParser.parseDot(search, player.equipment);
 
   if (!entity) {
     return B.sayAt(player, "You don't see anything like that here.");
@@ -166,20 +167,21 @@ function lookEntity(state, player, args) {
   if (entity instanceof Player) {
     // TODO: Show player equipment?
     B.sayAt(player, `You see ${entity.name}.`);
-    const allPlayerItems = function() {
-      let equipmentTemp = [];
-      let inventoryTemp = [];
-
+    let equipmentTemp = [];
+    let inventoryTemp = [];
+    if(!entity.inventory){
+      inventoryTemp.push(' nothing.');
+    }else{
       for (const [, item] of entity.inventory) {
         inventoryTemp.push(ItemUtil.display(item));
       }
-      for(const [slot, item ] of entity.equipment)
-      {
-        equipmentTemp.push(ItemUtil.display(item));
-      }
-      Broadcast.sayAt(player, entity.name+' is wearing'+equipmentTemp+', '+inventoryTemp);
-    };
-    allPlayerItems();
+    }
+    for(const [slot, item ] of entity.equipment)
+    {
+      equipmentTemp.push(ItemUtil.display(item));
+    }
+    Broadcast.sayAt(player, entity.name+' is holding'+inventoryTemp);
+    Broadcast.sayAt(player, entity.name+' is wearing'+equipmentTemp);
     return;
   }
 

@@ -7,38 +7,26 @@ module.exports = {
   usage: 'inventory',
   command : (state) => {
     return (args, player) => {
+      let equipmentTemp = [];
+      let inventoryTemp = [];
       if (!player.inventory || !player.inventory.size) {
-        return Broadcast.sayAt(player, "You aren't carrying anything.");
-      }
-
-      /*
-          if (isFinite(player.inventory.getMax())) {
-            Broadcast.at(player, ` (${player.inventory.size}/${player.inventory.getMax()})`);
-          }
-      */
-
-      // TODO: Implement grouping
-      const allPlayerItems = function () {
-        let equipmentTemp = [];
-        let inventoryTemp = [];
-
+        inventoryTemp.push("nothing");
+      }else{
         for (const [, item] of player.inventory) {
           inventoryTemp.push(ItemUtil.display(item));
         }
+      }
+
+      if (!player.equipment || !player.equipment.size) {
+        equipmentTemp.push("nothing");
+      }else{
         for (const [slot, item] of player.equipment) {
           equipmentTemp.push(ItemUtil.display(item));
         }
-        Broadcast.sayAt(player, "You have " + equipmentTemp + " " + "," + inventoryTemp);
-      };
+      }
 
-      if (!player.equipment.size) {
-        return Broadcast.sayAt(player, "You are completely naked!");
-      }
-      allPlayerItems();
-      Broadcast.sayAt(player, "You are wearing ");
-      for (const [slot, item] of player.equipment) {
-        Broadcast.sayAt(player, `  <${slot}> ${ItemUtil.display(item)}`);
-      }
+      Broadcast.sayAt(player, "You are holding " + inventoryTemp);
+      Broadcast.sayAt(player, "You are wearing " + equipmentTemp);
     };
   }
 };

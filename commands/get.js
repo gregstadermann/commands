@@ -41,6 +41,7 @@ module.exports = {
     // most recent corpse. See issue #247.
       container = ArgParser.parseDot(parts[1], [...player.room.items].reverse());
       container = container || ArgParser.parseDot(parts[1], [...player.equipment].reverse());
+      container = container || ArgParser.parseDot(parts[1], [...player.inventory].reverse());
       if (!container) {
         return Broadcast.sayAt(player, "You don't see anything like that here.");
       }
@@ -69,7 +70,7 @@ module.exports = {
         }
 
         if (player.isInventoryFull()) {
-          return Broadcast.sayAt(player, "You can't carry any more.");
+          return Broadcast.sayAt(player, "Your hands are full.");
         }
 
         pickup(item, container, player);
@@ -91,6 +92,10 @@ module.exports = {
 function pickup(item, container, player) {
   if (item.metadata.noPickup) {
     return Broadcast.sayAt(player, `${ItemUtil.display(item)} can't be picked up.`);
+  }
+
+  if(player.isInventoryFull()){
+    return Broadcast.sayAt(player, "You can't carry any more.");
   }
 
   if (container) {

@@ -16,7 +16,9 @@ module.exports = {
     if (!result) {
       return Broadcast.sayAt(player, "You aren't wearing anything like that.");
     }
-
+    if(player.isInventoryFull()){
+        return Broadcast.sayAt(player, "You can't hold any more items.");
+    }
     const [slot, item] = result;
     Broadcast.sayAt(player, `<green>You un-equip: </green>${ItemUtil.display(item)}<green>.</green>`);
     player.unequip(slot);

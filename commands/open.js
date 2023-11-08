@@ -44,8 +44,14 @@ module.exports = {
         return handleDoor(player, doorRoom, targetRoom, door, action);
       }
     }
+if(!player.equipment){
+    player.equipment = new Map();
+}
 
-    const item = ArgParser.parseDot(args, [ ...player.inventory, ...player.room.items ]);
+if(!player.inventory){
+  player.inventory = new Map();
+}
+    const item = ArgParser.parseDot(args, [ ...player.equipment, ...player.inventory, ...player.room.items ]);
 
     if (item) {
       return handleItem(player, item, action);
@@ -120,7 +126,7 @@ function handleDoor(player, doorRoom, targetRoom, door, action)
 function handleItem(player, item, action)
 {
   if (!item.closeable) {
-    return B.sayAt(player, `${ItemUtil.display(item)} is not a container.`)
+    return B.sayAt(player, `${ItemUtil.display(item)} is not a container.`);
   }
 
   switch (action) {
