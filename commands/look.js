@@ -35,24 +35,47 @@ function lookRoom(state, player) {
   const room = player.room;
   let otherPlayers = '';
 
-  if (player.room.coordinates) {
-    B.sayAt(player, '[<b><white>' + sprintf('%s', room.title) + '</white></b>]');
-  }else{
-    B.sayAt(player, '[<b><white>' + sprintf('%s', room.title) + '</white></b>]');}
+  //if (player.room.coordinates) {
+   // B.sayAt(player, '[<b><white>' + sprintf('%s', room.title) + '</white></b>]');
+  //}else{
+  B.sayAt(player, '[<b><white>' + sprintf('%s', room.title) + '</white></b>]');
+  //}
 
+  // If the room has items, display them
   if(room.items.size > 0) {
-    // show all the items in the room
     let $itemCollection = ' You also see ';
 
+    // If there is exactly 1 item in the room
     if(room.items.size === 1) {
       room.items.forEach(item => {
         $itemCollection = $itemCollection + item.roomDesc+'. ';
       });
     } else {
-      room.items.forEach(item => {
-        $itemCollection = ' ' + $itemCollection + item.roomDesc + ', ';
-      });
-      $itemCollection = $itemCollection + '.';
+      // In any other case (more than 1 item in the room) create an array from room.items set and iterate over it
+      const itemsArray = Array.from(room.items);
+
+      // If there are exactly 2 items in the room
+      if(room.items.size === 2){
+        itemsArray.forEach((item, key) => {
+              if (key === itemsArray.length - 1) {
+                $itemCollection = ' ' + $itemCollection + 'and ' + item.roomDesc + '.';
+              } else {
+                $itemCollection = ' ' + $itemCollection + item.roomDesc + ' ';
+              }
+            }
+        );
+      }else {
+        // More than 2 items in the room
+        itemsArray.forEach((item, key) => {
+              console.log(item, key);
+              if (key === itemsArray.length - 1) {
+                $itemCollection = ' ' + $itemCollection + 'and ' + item.roomDesc + '.';
+              } else {
+                $itemCollection = ' ' + $itemCollection + item.roomDesc + ', ';
+              }
+            }
+        );
+      }
     }
     B.sayAt(player, room.description+$itemCollection, 80);
   }else{

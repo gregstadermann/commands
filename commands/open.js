@@ -136,7 +136,7 @@ function handleItem(player, item, action)
       }
 
       if (item.closed) {
-        B.sayAt(player, `You open ${ItemUtil.display(item)}.`);
+        B.sayAt(player, `You open${ItemUtil.display(item)}.`);
         return item.open();
       }
 
@@ -148,7 +148,7 @@ function handleItem(player, item, action)
         return B.sayAt(player, "It's already closed.");
       }
 
-      B.sayAt(player, `You close ${ItemUtil.display(item)}.`);
+      B.sayAt(player, `You close${ItemUtil.display(item)}.`);
 
       return item.close();
     }
@@ -184,7 +184,7 @@ function handleItem(player, item, action)
       if (item.lockedBy) {
         const playerKey = player.hasItem(item.lockedBy);
         if (playerKey) {
-          B.sayAt(player, `*click* You unlock ${ItemUtil.display(item)} with ${ItemUtil.display(playerKey)}.`);
+          B.sayAt(player, `*click* You unlock${ItemUtil.display(item)} with ${ItemUtil.display(playerKey)}.`);
 
           return item.unlock();
         }

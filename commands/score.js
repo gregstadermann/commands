@@ -14,23 +14,19 @@ module.exports = {
 
     let stats = {
       strength: 0,
-      agility: 0,
+      logic: 0,
       aura: 0,
       constitution: 0,
       dexterity: 0,
+      reflexes: 0,
       discipline: 0,
       charisma: 0,
-      intuition: 0,
       intelligence: 0,
       wisdom: 0,
-      stamina: 0,
-      armor: 0,
       health: 0,
       critical: 0,
       AS: 0,
       DS: 0,
-      'edged weapons': 0,
-      'armor use': 0,
     };
 
     for (const stat in stats) {
@@ -114,28 +110,24 @@ module.exports = {
 
     printStat('strength', false); // left
     say('<b><green>' + sprintf('%30s', 'Gold ')); // right
-    printStat('agility', false); // left
+    printStat('logic', false); // left
     say(sprintf('%33s', '.' + B.line(12) + '.')); // right
     printStat('intelligence', false); // left
     say(sprintf('%19s| <b>%10s</b> |', '', p.getMeta('currencies.gold') || 0)); // right
-    printStat('stamina', false); // left
+    printStat('reflexes', false); // left
     say(sprintf('%33s', "'" + B.line(12) + "'")); // right
     printStat('discipline', true); // left
     printStat('constitution', true); // left
     printStat('dexterity', true); // left
     printStat('charisma', true); // left
-    printStat('intuition', true); // left
     printStat('wisdom', true); // left
     printStat('aura', true); // left
     say("'" + B.line(25) + "'");
 
     say(':' + B.line(25) + ':');
-    printStat('armor');
     printStat('critical');
     printStat('AS');
     printStat('DS');
-    printStat('edged weapons');
-    printStat('armor use');
     say("'" + B.line(25) + "'");
   }
 };

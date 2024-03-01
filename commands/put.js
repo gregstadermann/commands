@@ -16,12 +16,13 @@ module.exports = {
 
     // put 3.foo in bar -> put 3.foo bar -> put 3.foo into bar
     const parts = args.split(' ').filter(arg => !arg.match(/in/) && !arg.match(/into/));
-    console.log(parts);
+    //console.log(parts);
 
     if (parts.length === 1) {
       return B.sayAt(player, "Where do you want to put it?");
     }
 
+    // Ensures item must be in player's hand because player.inventory represents the hands
     const fromList = player.inventory;
     const fromArg = parts[0];
     const toArg = parts[1];
@@ -53,7 +54,7 @@ module.exports = {
     player.removeItem(item);
     toContainer.addItem(item);
 
-    B.sayAt(player, `<green>You put</green>${ItemUtil.display(item)}<green> into </green>${ItemUtil.display(toContainer)}<green>.</green>`);
+    B.sayAt(player, `<green>You put</green>${ItemUtil.display(item)}<green> into</green>${ItemUtil.display(toContainer)}<green>.</green>`);
 
     item.emit('put', player, toContainer);
     player.emit('put', item, toContainer);

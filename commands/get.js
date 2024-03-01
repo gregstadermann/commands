@@ -16,8 +16,9 @@ module.exports = {
       return Broadcast.sayAt(player, 'You are floating in the nether, there is nothing to get.');
     }
 
+    //console.log("get.js: args: " + args, player.isInventoryFull());
     if (player.isInventoryFull()) {
-      return Broadcast.sayAt(player, "You can't hold any more items.");
+      return Broadcast.sayAt(player, "Your hands are full!");
     }
 
     // 'loot' is an alias for 'get all'
@@ -99,13 +100,14 @@ function pickup(item, container, player) {
   }
 
   if (container) {
+    Broadcast.sayAt(player, `<green>You get</green>${ItemUtil.display(item)}<green> from ${container.name}.</green>`);
     container.removeItem(item);
   } else {
+    Broadcast.sayAt(player, `<green>You pick up</green>${ItemUtil.display(item)}<green>.</green>`);
     player.room.removeItem(item);
   }
   player.addItem(item);
 
-  Broadcast.sayAt(player, `<green>You receive loot: </green>${ItemUtil.display(item)}<green>.</green>`);
 
   item.emit('get', player);
   player.emit('get', item);
