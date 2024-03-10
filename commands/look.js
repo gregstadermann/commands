@@ -163,7 +163,6 @@ function lookRoom(state, player) {
 
 function lookEntity(state, player, args) {
   const room = player.room;
-
   args = args.split(' ');
   let search = null;
 
@@ -186,8 +185,17 @@ function lookEntity(state, player, args) {
   }
 
   if (entity instanceof Player) {
+
+    let pronoun = 'He';
+    if(entity.sex === 'male'){
+        pronoun = 'He';
+    }else if(entity.sex === 'female'){
+          pronoun = 'She';
+    }
+    console.log(entity.sex, pronoun);
     // TODO: Show player equipment?
-    B.sayAt(player, `You see ${entity.name}.`);
+    B.sayAt(player, `You see ${entity.name} the ${entity.metadata.class}.`);
+    B.sayAt(player, `${pronoun} appears to be a ${entity.race}.`);
     let equipmentTemp = [];
     let inventoryTemp = [];
     if(!entity.inventory){
@@ -201,8 +209,14 @@ function lookEntity(state, player, args) {
     {
       equipmentTemp.push(ItemUtil.display(item));
     }
-    Broadcast.sayAt(player, entity.name+' is holding'+inventoryTemp);
-    Broadcast.sayAt(player, entity.name+' is wearing'+equipmentTemp);
+    if(inventoryTemp.length === 0){
+        inventoryTemp.push(' nothing.');
+    }
+    if(equipmentTemp.length === 0){
+        equipmentTemp.push(' nothing.');
+    }
+    Broadcast.sayAt(player, pronoun+' is holding'+inventoryTemp);
+    Broadcast.sayAt(player, pronoun+' is wearing'+equipmentTemp);
     return;
   }
 
