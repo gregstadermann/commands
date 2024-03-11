@@ -103,22 +103,22 @@ module.exports = {
     }
     say(sprintf('%35s', '.' + B.line(22)) + '-');
 
-    B.at(p, sprintf('%37s', '|'));
-    const weaponDamage = Combat.getWeaponDamage(p);
-    const weapon = Combat.findWeapon(p) || { metadata: {} };
-    let weaponType = weapon.metadata.weapon_type || 'none';
-    let baseWeapon = weapon.metadata.baseWeapon || 'none';
-    const min = Combat.normalizeWeaponDamage(p, weaponDamage.min);
-    const max = Combat.normalizeWeaponDamage(p, weaponDamage.max);
-    say(sprintf(' %6s', baseWeapon));
-    B.at(p, sprintf('%37s', '|'));
-    say(sprintf(' %6s', weaponType));
-    B.at(p, sprintf('%37s', '|'));
-    say(sprintf(' %6s:<b>%5s</b> - <b>%-5s</b>', 'Damage', min, max));
-    B.at(p, sprintf('%37s', '|'));
-    say(sprintf(' %6s: <b>%12s</b>', 'Speed', B.center(12, Combat.getWeaponSpeed(p) + ' sec')));
+    //B.at(p, sprintf('%37s', '|'));
+    //const weaponDamage = Combat.getWeaponDamage(p, total, state);
+    //const weapon = Combat.findWeapon(p) || { metadata: {} };
+    //let weaponType = weapon.metadata.weapon_type || 'none';
+    //let baseWeapon = weapon.metadata.baseWeapon || 'none';
+    //const min = Combat.normalizeWeaponDamage(p, weaponDamage.min);
+    //const max = Combat.normalizeWeaponDamage(p, weaponDamage.max);
+    //say(sprintf(' %6s', baseWeapon));
+    //B.at(p, sprintf('%37s', '|'));
+    //say(sprintf(' %6s', weaponType));
+    //B.at(p, sprintf('%37s', '|'));
+    //say(sprintf(' %6s:<b>%5s</b> - <b>%-5s</b>', 'Damage', min, max));
+    //B.at(p, sprintf('%37s', '|'));
+    //say(sprintf(' %6s: <b>%12s</b>', 'Speed', B.center(12, Combat.getWeaponSpeed(p) + ' sec')));
 
-    say(sprintf('%60s', "'" + B.line(22) + "-"));
+    //say(sprintf('%60s', "'" + B.line(22) + "-"));
 
     // Begin Stats Section
     say('<b><green>' + sprintf(
