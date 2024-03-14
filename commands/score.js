@@ -131,7 +131,7 @@ module.exports = {
     const printStat = (stat, newline = true) => {
       const val = stats[stat];
       const bonus = p.getSkillBonus(stat);
-      console.log(val, bonus);
+      //console.log(val, bonus);
 
       if(val === undefined) {
         return;

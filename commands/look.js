@@ -67,7 +67,7 @@ function lookRoom(state, player) {
       }else {
         // More than 2 items in the room
         itemsArray.forEach((item, key) => {
-              console.log(item, key);
+              //console.log(item, key);
               if (key === itemsArray.length - 1) {
                 $itemCollection = ' ' + $itemCollection + 'and ' + item.roomDesc + '.';
               } else {
@@ -192,7 +192,6 @@ function lookEntity(state, player, args) {
     }else if(entity.sex === 'female'){
           pronoun = 'She';
     }
-    console.log(entity.sex, pronoun);
     // TODO: Show player equipment?
     B.sayAt(player, `You see ${entity.name} the ${entity.metadata.class}.`);
     B.sayAt(player, `${pronoun} appears to be a ${entity.race}.`);
