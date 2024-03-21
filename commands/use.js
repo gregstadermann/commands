@@ -19,12 +19,14 @@ module.exports = {
     }
 
     const item = ArgParser.parseDot(args, player.inventory);
+    console.log(item);
 
     if (!item) {
       return say("You don't have anything like that.");
     }
 
     const usable = item.getBehavior('usable');
+    //console.log(item);
     if (!usable) {
       return say("You can't use that.");
     }
@@ -38,6 +40,7 @@ module.exports = {
 
       if (!useSpell) {
         Logger.error(`Item: ${item.entityReference} has invalid usable configuration.`);
+        console.log(usable.options);
         return say("You can't use that.");
       }
 

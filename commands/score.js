@@ -68,11 +68,12 @@ module.exports = {
     }
 
     say(sprintf(' %-9s: %12s', 'Health', `${stats.health.current}/${stats.health.max}`));
-    say(sprintf(' %-9s: %12s', 'TPs', `[ ${p.tps[0]}/${p.tps[1]} ]`));
-    say('<b><green>' + sprintf(
+    say(sprintf(' %-9s: %12s', 'TPs', `${p.tps[0]}/${p.tps[1]}`));
+    /** say('<b><green>' + sprintf(
       '%60s',
       'Weapon '
     ));
+        **/
 
     // class resource
     switch (p.playerClass.id) {
@@ -130,7 +131,7 @@ module.exports = {
 
     const printStat = (stat, newline = true) => {
       const val = stats[stat];
-      const bonus = p.getSkillBonus(stat);
+      const bonus = p.getStatBonus(stat, p.race);
       //console.log(val, bonus);
 
       if(val === undefined) {
