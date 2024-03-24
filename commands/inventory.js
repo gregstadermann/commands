@@ -25,7 +25,7 @@ module.exports = {
         if(inventoryTemp[1]) {
           inventoryMessage = inventoryMessage + ' and' + inventoryTemp[1] + ' in your left hand.';
         }
-        Broadcast.sayAt(player, inventoryMessage);
+        Broadcast.sayAt(player, inventoryMessage, 80);
         //Broadcast.sayAt(player, "You are holding" + inventoryTemp[0] + "in your right hand and" + inventoryTemp[1] + "in your left hand.");
       }
 
@@ -37,7 +37,7 @@ module.exports = {
         for (const [slot, item] of player.equipment) {
           equipmentTemp.push(ItemUtil.display(item));
         }
-        Broadcast.sayAt(player, "You are wearing" + equipmentTemp);
+        Broadcast.sayAt(player, "You are wearing" + equipmentTemp, 80);
       }
 
     };

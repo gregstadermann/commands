@@ -164,7 +164,7 @@ function lookRoom(state, player) {
 function lookEntity(state, player, args) {
   const room = player.room;
   args = args.split(' ');
-  let search = null;
+  let search;
 
   if (args.length > 1 && args[0] === 'at') {
     search = args[0] === 'at' ? args[1] : args[0];
@@ -186,15 +186,11 @@ function lookEntity(state, player, args) {
 
   if (entity instanceof Player) {
 
-    let pronoun = 'He';
-    if(entity.sex === 'male'){
-        pronoun = 'He';
-    }else if(entity.sex === 'female'){
-          pronoun = 'She';
-    }
+    let pronoun = entity.sex === 'male' ? 'He' : 'She';
     // TODO: Show player equipment?
     B.sayAt(player, `You see ${entity.name} the ${entity.metadata.class}.`);
     B.sayAt(player, `${pronoun} appears to be a ${entity.race}.`);
+    B.sayAt(player, `${pronoun} is ${entity.height}. ${pronoun} has ${entity.eyeColor} ${entity.eyeTrait} eyes and ${entity.skinTone} skin. ${pronoun} has ${entity.hairStyle} ${entity.hairTexture} ${entity.hairColor} hair ${entity.hairQuirk}. ${pronoun} has ${entity.faceFeature} face, a ${entity.noseDetail} nose, and ${entity.distinguishingMark}.`, 80);
     let equipmentTemp = [];
     let inventoryTemp = [];
     if(!entity.inventory){
@@ -214,8 +210,8 @@ function lookEntity(state, player, args) {
     if(equipmentTemp.length === 0){
         equipmentTemp.push(' nothing.');
     }
-    Broadcast.sayAt(player, pronoun+' is holding'+inventoryTemp);
-    Broadcast.sayAt(player, pronoun+' is wearing'+equipmentTemp);
+    Broadcast.sayAt(player, pronoun + ' is holding' + inventoryTemp, 80);
+    Broadcast.sayAt(player, pronoun + ' is wearing' + equipmentTemp, 80);
     return;
   }
 
@@ -264,9 +260,11 @@ function lookEntity(state, player, args) {
         }
         B.sayAt(player, ':');
 
+        let allItems = [];
         for (const [, item ] of entity.inventory) {
-          B.sayAt(player, '  ' + ItemUtil.display(item));
+          allItems.push(item.name);
         }
+        B.sayAt(player, allItems.join(', '), 80);
         break;
       }
     }

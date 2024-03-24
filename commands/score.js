@@ -68,71 +68,19 @@ module.exports = {
     }
 
     say(sprintf(' %-9s: %12s', 'Health', `${stats.health.current}/${stats.health.max}`));
+    say(sprintf(' %-9s: %12s', 'Mana', `${p.getAttribute('mana')}/${p.getMaxAttribute('mana')}`));
     say(sprintf(' %-9s: %12s', 'TPs', `${p.tps[0]}/${p.tps[1]}`));
-    /** say('<b><green>' + sprintf(
-      '%60s',
-      'Weapon '
-    ));
-        **/
-
-    // class resource
-    switch (p.playerClass.id) {
-      case 'warrior':
-        const energy = {
-          current: p.getAttribute('energy'),
-          max: p.getMaxAttribute('energy')
-        };
-        B.at(p, sprintf(' %-9s: %12s', 'Energy', `${energy.current}/${energy.max}`));
-        break;
-      case 'mage':
-        const mana = {
-          current: p.getAttribute('mana'),
-          max: p.getMaxAttribute('mana')
-        };
-        B.at(p, sprintf(' %-9s: %12s', 'Mana', `${mana.current}/${mana.max}`));
-        break;
-      case 'paladin':
-        const favor = {
-          current: p.getAttribute('favor'),
-          max: p.getMaxAttribute('favor')
-        };
-        B.at(p, sprintf(' %-9s: %12s', 'Favor', `${favor.current}/${favor.max}`));
-        break;
-      default:
-        B.at(p, B.line(24, ' '));
-        break;
-    }
-    say(sprintf('%35s', '.' + B.line(22)) + '-');
-
-    //B.at(p, sprintf('%37s', '|'));
-    //const weaponDamage = Combat.getWeaponDamage(p, total, state);
-    //const weapon = Combat.findWeapon(p) || { metadata: {} };
-    //let weaponType = weapon.metadata.weapon_type || 'none';
-    //let baseWeapon = weapon.metadata.baseWeapon || 'none';
-    //const min = Combat.normalizeWeaponDamage(p, weaponDamage.min);
-    //const max = Combat.normalizeWeaponDamage(p, weaponDamage.max);
-    //say(sprintf(' %6s', baseWeapon));
-    //B.at(p, sprintf('%37s', '|'));
-    //say(sprintf(' %6s', weaponType));
-    //B.at(p, sprintf('%37s', '|'));
-    //say(sprintf(' %6s:<b>%5s</b> - <b>%-5s</b>', 'Damage', min, max));
-    //B.at(p, sprintf('%37s', '|'));
-    //say(sprintf(' %6s: <b>%12s</b>', 'Speed', B.center(12, Combat.getWeaponSpeed(p) + ' sec')));
-
-    //say(sprintf('%60s', "'" + B.line(22) + "-"));
 
     // Begin Stats Section
-    say('<b><green>' + sprintf(
-      '%-27s',
-      ' Stats'
-    ) + '</green></b>');
-    say('.' + B.line(26) + '.');
 
+    say('');
+    say('<b><green>' + sprintf('%-27s', ' Stats') + '</green></b>');
+
+    say('.' + B.line(26) + '.');
 
     const printStat = (stat, newline = true) => {
       const val = stats[stat];
       const bonus = p.getStatBonus(stat, p.race);
-      //console.log(val, bonus);
 
       if(val === undefined) {
         return;
@@ -147,9 +95,9 @@ module.exports = {
       }
       const statColor = (val.current > val.base ? 'green' : 'white');
       const str = sprintf(
-        `| %-17s : <b><${statColor}>%4s</${statColor}></b> |`,
-        stat[0].toUpperCase() + stat.slice(1),
-        val.current
+          `| %-17s : <b><${statColor}>%4s</${statColor}></b> |`,
+          stat[0].toUpperCase() + stat.slice(1),
+          val.current
       );
 
       if (newline) {
@@ -195,7 +143,7 @@ module.exports = {
       }
       const statColor = (val.current > val.base ? 'green' : 'white');
       const str = sprintf(
-          `| %-17s : <b><${statColor}>%4s</${statColor}> (+%s)</b> |`,
+          `| %-20s : <b><${statColor}>%2s</${statColor}> (+%2s)</b>   |`,
           stat[0].toUpperCase() + stat.slice(1),
           val.current,
           bonus
@@ -212,7 +160,7 @@ module.exports = {
         '%-27s',
         ' Skills'
     ) + '</green></b>');
-    say("." + B.line(31) + ".");
+    say("." + B.line(35) + ".");
     printSkill('one_handed_edged', true); // left
     printSkill('one_handed_blunt', true); // left
     printSkill('two_handed', true); // left
@@ -237,7 +185,7 @@ module.exports = {
     printSkill('scroll_reading', true); // left
     printSkill('harness_power', true); // left
     printSkill('first_aid', true); // left
-    say("'" + B.line(31) + "'");
+    say("'" + B.line(35) + "'");
     say('');
 
     // Begin Spells Section
