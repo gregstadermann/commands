@@ -10,7 +10,7 @@ module.exports = {
         if (!args || !args.length) {
             return Broadcast.sayAt(player, 'Where are you trying to go?');
         }
-
+        let oldRoom = player.room;
         let direction = args;
         let roomExit = null;
 
@@ -22,8 +22,9 @@ module.exports = {
         const targetRoom = state.RoomManager.getRoom(roomExit.roomId);
 
         player.moveTo(targetRoom, () => {
-            Broadcast.sayAt(player, '<b><green>You walk '+direction+'</green></b>\r\n');
+            Broadcast.sayAt(player, '<b><green>You walk towards the '+direction+'</green></b>\r\n');
 
+            Broadcast.sayAt(oldRoom, `${player.name} just went towards the ${roomExit.direction}.`);
             Broadcast.sayAtExcept(targetRoom, `${player.name} just arrived.`, player);
             state.CommandManager.get('look').execute('', player);
         });
